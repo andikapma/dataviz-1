@@ -54,7 +54,7 @@ Anda harus mengaktifkan paket terlebih dahulu untuk dapat menggunakan fungsi-fun
 library(___)
 ```
 
-Anda dapat menggunakan fungsi `qplot()` untuk membuat grafik menggunakan ggplot2. Silakan jalankan `help(qplot)` atau `?qplot` pada konsol RStudio untuk membuka laman dokumentasi fungsi `qplot()`. Setelah Anda membaca dokumentasi tersebut, isilah bagian ___ pada *chunk* berikut untuk membuat grafik hubungan antara carat (sumbu x), price (sumbu y) dan clarity dari dataset diamonds (dataset diamonds terdapat dalam paket ggplot2)!
+Anda dapat menggunakan fungsi `qplot()` untuk membuat grafik menggunakan ggplot2. Silakan jalankan `help(qplot)` atau `?qplot` pada konsol RStudio untuk membuka laman dokumentasi fungsi `qplot()`. Dalam contoh ini Anda akan membuat grafik dari dataset diamonds yang tersedia dalam paket ggplot2. Anda dapat melihat isi serta dokumentasi dari dataset tersebut dengan menjalankan `diamonds` dan `?diamonds`  di konsol RStudio. Setelah Anda membaca dokumentasi fungsi `qplot()` dan dataset diamonds tersebut, isilah bagian ___ pada *chunk* berikut untuk membuat grafik hubungan antara berat (sumbu x), harga (sumbu y) dan kejernihan intan dari dataset diamonds. 
 
 ```{r}
 qplot(x = ___, y = ___, colour = clarity, data = ___)
