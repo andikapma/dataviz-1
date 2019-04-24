@@ -1,0 +1,47 @@
+---
+title: "Pendahuluan"
+author: "Muhammad Aswan Syahputra"
+date: "4/24/2019"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 3
+    fig_height: 6
+    fig_width: 9
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Ini merupakan dokumen R Markdown yang dapat digunakan untuk membuat dokumen HTML, PDF, dan bahkan dokumen berekstensi docx atau odt. Anda dapat membuat dokumen tulisan, salindia presentasi, dan laman web statis maupun interaktif dengan melalui R Markdown. Penggunaan R Markdown dalam proyek analisis data akan membuat alur kerja menjadi lebih mudah dan *reproducible*. Informasi lebih lanjut mengenai R Markdown dapat dilihat pada pranala [ini](http://rmarkdown.rstudio.com).
+
+Kode R dapat dimasukan ke dalam dokumen R Markdown dengan menggunakan *chunck* yang dimulai dengan penanda  tiga *backticks* '```' (dibuat dengan klik tombol Insert - R). Contoh cara untuk penulisan kode R kedalam dokumen R Markdown adalah sebagai berikut:
+
+```{r}
+head(mtcars) # melihat 6 baris pertama dari data mtcars, mtcars adalah data bawaan yang tersedia di R
+```
+
+Jika ingin menjalankan kode R dalam *chunck* tersebut, Anda dapat menggunakan pemintas Ctrl + Enter (menjalankan satu baris kode) atau Ctrl + Shift + Enter (menjalankan semua kode dalam *chunck*). Sekarang buatlah *chunck* baru yang isinya adalah baris kode R berikut: (Petunjuk: Gunakan Ctrl + Alt + I)
+
+```{r}
+filled.contour(volcano,
+               color.palette = terrain.colors, 
+               plot.title = title("Topografi Gunung Maunga Whau"), 
+               key.title = title("Tinggi\n(meter)"))
+
+```
+
+
+Setelah selesai membuat dokumen R Markdown yang berisikan konten tulisan beserta kode R, Anda dapat klik tombol **Knit** untuk menghasilkan dokumen baru sesuai dengan format dokumen yang diinginkan. Dalam contoh ini format dokumen keluaran R Markdown setelah menjalankan **Knit** adalah dokumen markdown yang akan diolah oleh GitHub menjadi laman web HTML. Anda dapat mengatur format dokumen keluaran dengan cara mengubah baris *output* pada YAML metadata (lihat baris paling atas dokumen ini) seperti contoh berikut:
+
+```
+---
+title: "Pendahuluan"
+author: "Muhammad Aswan Syahputra"
+date: "4/24/2019"
+output: word_document
+---
+```
