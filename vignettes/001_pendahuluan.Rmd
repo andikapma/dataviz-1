@@ -1,7 +1,6 @@
 ---
 title: "Pendahuluan"
 author: "Muhammad Aswan Syahputra"
-date: "4/24/2019"
 output: 
   github_document:
     fig_height: 6
@@ -11,7 +10,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", message = FALSE, warning = FALSE)
 ```
 
 ## R Markdown
@@ -24,14 +23,20 @@ Dokumen R Markdown umumnya terdiri atas dua komponen, yaitu teks dan kode R. Tek
 head(mtcars) 
 ```
 
-Anda dapat membuat *chunk* kode R dengan cara klik tombol **Insert -- R** atau melalui pemintas **Ctrl + Alt + I**. Jika ingin menjalankan kode R dalam *chunk* tersebut, Anda dapat menggunakan pemintas **Ctrl + Enter** (menjalankan satu baris kode) atau **Ctrl + Shift + Enter** (menjalankan semua kode dalam *chunk*). Sekarang buat dan jalankanlah *chunk* baru yang isinya adalah baris kode R berikut:
+Anda dapat membuat *chunk* kode R dengan cara klik tombol **Insert -- R** atau melalui pemintas **Ctrl + Alt + I**. Sangat direkomendasikan untuk memberikan nama pada *chunk* agar mempermudah akses kode R dan mempermudah *debugging* jika terjadi galat. Anda dapat memberikan nama pada bagian ```{r} di awal *chunk*. Perhatikan contoh penamaan *chunk* berikut yang berisi kode R untuk melihat nilai statistik dari dataset mtcars (Catatan: penamaan *chunk* tidak boleh menggunakan spasi):
+
+```{r stats-mtcars}
+summary(mtcars)
+```
+
+Saat berkerja dengan dokumen R Markdown, Anda juga dapat menjalankan kode R yang Anda tuliskan dalam *chunk*. Anda dapat menggunakan pemintas **Ctrl + Enter** untuk menjalankan satu baris kode R atau **Ctrl + Shift + Enter** untuk menjalankan semua kode R dalam sebuah *chunk*. Sekarang buatlah *chunk* baru dengan nama 'plot-volcano' dengan menggunakan baris kode R di bawah ini! Kemudian jalankanlah baris kode R dalam *chunk* yang telah Anda buat tersebut dengan menggunakan pemintas **Ctrl + Shift + Enter**!
 
 filled.contour(volcano,
                color.palette = terrain.colors, 
                plot.title = title("Topografi Gunung Maunga Whau"), 
                key.title = title("Tinggi\n(meter)"))
 
-Setelah selesai membuat dokumen R Markdown yang berisikan teks beserta kode R, Anda dapat klik tombol **Knit** atau pemintas **Ctrl + Shift + K** untuk menghasilkan dokumen final sesuai dengan format dokumen yang diinginkan. Dokumen final yang dihasilkan akan berisi teks, kode R, serta *output* dari kode R yang dituliskan. Dalam contoh ini format dokumen final keluaran R Markdown setelah menjalankan **Knit** adalah dokumen markdown yang akan diolah oleh GitHub menjadi laman web HTML. Anda dapat mengatur format dokumen keluaran dengan cara mengubah baris *output* pada YAML metadata (lihat baris paling atas dokumen ini) seperti contoh berikut:
+Setelah selesai membuat dokumen R Markdown yang berisikan teks beserta *chunk* berisi kode R, Anda dapat klik tombol **Knit** atau pemintas **Ctrl + Shift + K** untuk mengkonversi dokumen R Markdown menjadi dokumen final sesuai dengan format dokumen yang diinginkan. Dokumen final yang dihasilkan akan berisi teks, kode R, serta *output* dari kode R yang dituliskan. Dalam contoh ini format dokumen final keluaran R Markdown setelah menjalankan **Knit** adalah dokumen markdown (ekstensi .md). Anda dapat mengatur format dokumen final dengan cara mengubah baris *output* pada YAML metadata (lihat baris paling atas dokumen ini) seperti contoh berikut:
 
 ```
 ---
@@ -44,34 +49,38 @@ editor_options:
 ---
 ```
 
-## ggplot2
+## Pengantar ggplot2
 
 Bahasa R memiliki berbagai sistem untuk membuat grafik, contohnya base, lattice, ggplot, dan lain-lain. Namun dalam lokakarya ini Anda akan berfokus pada sistem ggplot saja. Sistem pembuatan grafik dengan ggplot dapat dilakukan dengan menggunakan paket ggplot2. Anda dapat memasangnya dengan cara menjalankan `install.packages("ggplot2")` atau melalui `install.packages("tidyverse)"` (ggplot2 merupakan bagian dari Tidyverse). Anda juga dapat memasang paket melalui menu **Tools -- Install Packages...** pada RStudio. Silakan pasang paket ggplot2 terlebih dahulu jika Anda belum memasangnya.
 
 Anda harus mengaktifkan paket terlebih dahulu untuk dapat menggunakan fungsi-fungsi yang terdapat dalam paket tersebut. Cara mengaktifkan paket adalah dengan cara menjalankan `library(nama_paket)` atau `library("nama_paket")` pada *chunk* R Markdown, R Script, atau konsol RStudio jika Anda bekerja di sesi interaktif. Ingat bahwa paket harus selalu diaktifkan sebelum memulai sesi analisis! Sekarang aktifkanlah paket ggplot2 dengan cara mengganti bagian ___ dengan jawaban yang tepat!
 
-```{r}
+```{r load-package}
 library(___)
 ```
 
 Anda dapat menggunakan fungsi `qplot()` untuk membuat grafik menggunakan ggplot2. Silakan jalankan `help(qplot)` atau `?qplot` pada konsol RStudio untuk membuka laman dokumentasi fungsi `qplot()`. Dalam contoh ini Anda akan membuat grafik dari dataset diamonds yang tersedia dalam paket ggplot2. Anda dapat melihat isi serta dokumentasi dari dataset tersebut dengan menjalankan `diamonds` dan `?diamonds`  di konsol RStudio. Setelah Anda membaca dokumentasi fungsi `qplot()` dan dataset diamonds tersebut, isilah bagian ___ pada *chunk* berikut untuk membuat grafik hubungan antara berat (sumbu x), harga (sumbu y) dan kejernihan intan dari dataset diamonds. 
 
-```{r}
+```{r plot-diamonds1}
 qplot(x = ___, y = ___, colour = clarity, data = ___)
 ```
 
 Selamat Anda telah berhasil membuat grafik pertama menggunakan ggplot2! Selain meggunakan fungsi `qplot()` Anda juga dapat menggunakan fungsi `ggplot()` untuk membuat grafik. Berikut merupakan kode R untuk membuat grafik dari dataset diamonds yang persis sama dengan grafik pada *chunk* sebelumnya:
 
-```{r}
+```{r plot-diamonds2}
 ggplot(data = diamonds, mapping = aes(x = carat, y = price, colour = clarity)) +
   geom_point()
 ```
 
-Anda juga dapat menuliskan kode R di atas dalam bentuk seperti ini:
+Anda juga dapat menuliskan kode R di atas dalam bentuk seperti di bawah ini. Dalam contoh di bawah ini juga ditunjukan bahwa Anda dapat menyimpan keluaran dari fungsi `ggplot()` ke dalam obyek R dengan nama plot_diamonds dan menyimpan grafik tersebut ke komputer menggunakan fungsi `ggsave()` (Catatan: penanda # dalam *chunk* digunakan untuk menuliskan komentar).
 
-```{r}
-ggplot(data = diamonds) +
-  geom_point(mapping = aes(x = carat, y = price, colour = clarity))
+```{r plot-diamonds3}
+plot_diamonds <- ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price, colour = clarity)) # Saat output disimpan ke dalam obyek R, grafik tidak otomatis dicetak
+
+plot_diamonds # Untuk mencetak grafik, Anda harus menjalankan nama obyek R yang sebelumnya dibuat
+
+ggsave(filename = "diamonds.png", plot = plot_diamonds)
 ```
 
 Meskipun penulisan kode R untuk membuat grafik menggunakan fungsi `ggplot()` relatif lebih panjang, lebih banyak kostumisasi dan pengaturan grafik yang dapat dilakukan dengan menggunakan fungsi `ggplot()` dibandingkan fungsi `qplot()`. Dalam lokakarya ini Anda akan diminta untuk membuat banyak grafik dengan menggunakan struktur penulisan kode R sebagai berikut:
