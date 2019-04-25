@@ -19,7 +19,7 @@ Pembuatan animasi dari grafik yang diolah menggunakan paket ggplot2 dapat dilaku
 library(ggplot2)
 library(gganimate)
 library(ggthemr)
-ggthemr("flat dark", type = "outer")
+ggthemr("flat dark", type = "outer") # Anda juga dapat menggunakan tema lain. Pilihan tema dapat dilihat di https://github.com/cttobin/ggthemr#palettes
 ```
 
 Anda akan menggunakan dataset weather yang memiliki informasi mengenai data cuaca di beberapa lokasi di area Bandung. Dataset tersebut tersimpan pada direktori data-raw dengan nama weather.rda. Pergunakan fungsi `load()` untuk mengimpor dataset tersebut menjadi obyek R dengan nama weather dan kemudian pelajarilah strukturnya. Ada berapa lokasi dan variabel cuaca yang terdapat dalam dataset tersebut? Kapan observasi tersebut dimulai dan diakhiri?
@@ -33,18 +33,18 @@ range(weather$time)
 
 Sekarang buatlah *line graph* untuk mengamati pola perubahan suhu terhadap waktu dengan menggunakan ggplot2 dan simpan hasilnya ke dalam obyek R bernama plot_weather1! Pergunakan warna garis yang berbeda untuk setiap lokasi dan atur semua ketebalan garis menjadi 0.8.
 
-```{r}
-plot_weather1 <- 
+```{r plot-temperature1}
+plot_temperature <- 
   ggplot(weather, aes(x = time, y = temperature, colour = location)) +
   geom_line(lwd = 0.8)
-plot_weather1
+plot_temperature
 ```
 
 Pada grafik di atas, label pada sumbu x hanya menunjukan informasi jam. Perbaikilah label tersebut dengan menambahkan kode `scale_x_datetime(date_breaks = "12 hours", date_minor_breaks = "1 hour")` pada plot_weather serta ubahlah posisi *legend* menjadi di bawah. Kemudian gantilah judul label sumbu x menjadi 'Waktu' dan sumbu y menjadi 'Suhu (Celcius)' serta hapus judul pada *legend*. Jangan lupa untuk menyimpan grafik yang sudah Anda modifikasi tersebut dengan nama plot_weather1 (Petunjuk: fungsi `theme()` dan `labs()`).  
 
-```{r}
-plot_weather1 <- 
-  plot_weather1 +
+```{r plot-temperature2}
+plot_temperature <- 
+  plot_temperature +
   scale_x_datetime(date_breaks = "12 hours", date_minor_breaks = "1 hour") +
   theme(
     legend.position = "bottom"
@@ -54,28 +54,39 @@ plot_weather1 <-
     y = "Suhu (Celcius)",
     colour = NULL
   )
-plot_weather1
+plot_temperature
 ```
 
 Sekarang Anda dapat mengubah grafik statis diatas menjadi animasi dengan menggunakan fungsi-fungsi dari paket gganimate. Apa yang akan terjadi jika Anda menambahkan kode `transition_reveal(time)` pada plot_weather1?
 
-```{r}
-plot_weather1 +
+```{r animate-temperature}
+plot_temperature +
   transition_reveal(time)
 ```
 
 Selamat Anda telah berhasil membuat animasi pertama dari grafik menggunakan paket ggplot2 dan gganimate! Anda dapat berkesperimen membuat animasi serupa dengan menggunakan variabel pressure atau windspeed dari dataset weather.
 
-Selanjutnya Anda akan menggunakan dataset yang sama untuk membuat *scatterplot* antara suhu dan tekanan udara dengan mediator
+Selanjutnya Anda akan menggunakan dataset yang sama untuk membuat *scatterplot* antara suhu dan tekanan udara. Selain itu Anda juga diminta untuk menambahkan informasi lokasi (*aesthetic colour*) dan kecepatan angin (*aesthetic size*) ke dalam grafik tersebut. Anda dapat menamakan grafik tersebut dengan nama plot_weather.
 
-```{r}
-ggplot(weather, aes(x = temperature, y = pressure, colour = location, size = windspeed)) +
-  geom_point() +
+```{r plot-weather1}
+plot_weather <- ggplot(weather, aes(x = temperature, y = pressure, colour = location, size = windspeed)) +
+  geom_point()
+plot_weather
+```
+
+```{r plot-weather2}
+plot_weather <- 
+  plot_weather +
   scale_size_area() +
   guides(colour = FALSE) +
   theme(
     legend.position = "bottom"
-  ) +
+  )
+plot_weather
+```
+
+```{r animate-weather}
+plot_weather  +
   transition_states(location) +
   ease_aes('cubic-in-out') +
   enter_grow() +
@@ -83,7 +94,7 @@ ggplot(weather, aes(x = temperature, y = pressure, colour = location, size = win
   labs(
     x = "Suhu (C)",
     y = "Tekanan (hPa)",
-    title = "Grafik Hubungan Antara Suhu dan Tekanan Udara",
+    title = "Hubungan Antara Suhu dan Tekanan Udara",
     subtitle = "Lokasi: {closest_state}",
     size = "Kecepatan angin (mps)"
   )
