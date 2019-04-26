@@ -20,10 +20,9 @@ load("../data/household_access.rda")
 household_access
 ```
 
-Selanjutnya Anda diminta untuk mengaktifkan paket ggplot2, viridis, magick, dan grid. Isilah bagian ___ dengan jawaban yang tepat!
+Selanjutnya Anda diminta untuk mengaktifkan paket ggplot2, magick, dan grid. Isilah bagian ___ dengan jawaban yang tepat!
 
 ```{r load-package}
-library(___)
 library(___)
 library(___)
 library(___)
@@ -44,17 +43,21 @@ plot_household <-
 plot_household
 ```
 
-Pada grafik tersebut nampak banyak titik-titik observasi yang menumpuk. Perbakilah hal tersebut dengan mengatur nilai argumen `alpha` dalam baris kode `geom_point()`. Anda dapat bereksperimen mencari visual yang sesuai dengan menggunakan nilai alpha antara 0 hingga 1. Selain itu gantilah palet warna dari *aesthetic mapping colour* dengan menambahkan baris kode `scale_color_viridis_d()` (dari peket viridis). Simpan grafik hasil modifikasi Anda tersebut dalam obyek R dengan nama plot_household seperti sebelumnya!
+Pada grafik tersebut nampak banyak titik-titik observasi yang menumpuk. Perbakilah hal tersebut dengan mengatur nilai argumen `alpha` dalam baris kode `geom_point()`. Anda dapat bereksperimen mencari visual yang sesuai dengan menggunakan nilai alpha antara 0 hingga 1. Selain itu gantilah palet warna dari *aesthetic mapping colour* dengan menambahkan kode warna (*hexvalue*): "#162c4f", "#2c89a0", "#37c871", "#b3b3b3", dan "#2c62a0" ke baris kode `scale_color_manual()`. Simpan grafik hasil modifikasi Anda tersebut dalam obyek R dengan nama plot_household seperti sebelumnya!
 
 ```{r plot-household2}
 plot_household <- 
   plot_household +
   geom_point(alpha = ___) +
-  ___
+  scale_colour_manual(values = c("___",
+                                 "___",
+                                 "___",
+                                 "___",
+                                 "___"))
 plot_household
 ```
 
-Sekarang grafik tersebut nampak lebih baik dengan diperbaikinya titik-titik data yang menumpuk dan pergantian palet warna (Anda juga dapat menggunakan palet warna lain, misalnya `scale_colour_brewer()` atau sebagainya). Jika diperhatikan dengan saksama, Anda dapat menyaksikan bahwa penamaan obyek pada legenda ditulis terbaik (contoh pada safe_water 25 ditulis paling atas, kemudian, 50, terakhir 70). Anda dapat memperbaiki hal tersebut dengan mengatur nilai pada argumen `reverse` pada baris kode `guides()` menjadi TRUE!
+Sekarang grafik tersebut nampak lebih baik dengan diperbaikinya titik-titik data yang menumpuk dan pergantian palet warna. Anda juga dapat menggunakan palet warna lain, misalnya `scale_colour_brewer()` atau `scale_colour_viridis()` dari paket viridis. Jika diperhatikan dengan saksama, Anda dapat menyaksikan bahwa penamaan obyek pada legenda ditulis terbalik (contoh pada safe_water 25 ditulis paling atas, kemudian, 50, terakhir 70). Anda dapat memperbaiki hal tersebut dengan mengatur nilai pada argumen `reverse` pada baris kode `guides()` menjadi TRUE!
 
 ```{r plot-household3}
 plot_household <- 
@@ -106,7 +109,7 @@ Anda dapat menyimpan grafik dalam format png, pdf, svg, wmf. Selain itu Anda jug
 Selanjutnya pada *chunk* berikut akan ditunjukan salah satucara untuk menambahkan logo Anda atau logo perusahaan ke dalam grafik plot_household.
 
 ```{r brand-plot_household1}
-logo <- image_read("../data-raw/sensolutionID.png") # berkas logo dengan format png atau jpg
+logo <- image_read("../data-raw/sensolutionid.png") # berkas logo dengan format png atau jpg
 plot_household
 grid::grid.raster(logo, x = 0.0, y = 0.0, just = c('left', 'bottom'), height = unit(0.5, 'inches'))
 ```
@@ -117,7 +120,7 @@ Tuliskan kembali baris kode pada *chunk* di atas namun gantilah alamat berkas lo
 
 ```
 
-Selain dengan menggunakan *preset theme* dari ggplot2 atau meracik tema sendiri, Anda juga dapat menggunakan paket-paket R yang menyediakan tema untuk ggplo2. Diantaranya adalah paket ggpubr dan paket ggthemr. Pada modul selanjutnya Anda akan belajar menggunakan salahsatu tema dari paket tersebut. Namun sebelumnya, dapatkah Anda menambahkan baris kode `facet_warp(~year)` pada plot_household? Apakah yang akan terjadi pada grafik tersebut?
+Selain dengan menggunakan *preset theme* dari ggplot2 atau meracik tema sendiri, Anda juga dapat menggunakan paket-paket R yang menyediakan tema untuk ggplo2. Diantaranya adalah paket hrbrthemes ggpubr dan paket ggthemr. Pada modul selanjutnya Anda akan belajar menggunakan salahsatu tema dari paket tersebut. Namun sebelumnya, dapatkah Anda menambahkan baris kode `facet_warp(~year)` pada plot_household? Apakah yang akan terjadi pada grafik tersebut?
 
 ```{r facet-plot_household}
 plot_household +
