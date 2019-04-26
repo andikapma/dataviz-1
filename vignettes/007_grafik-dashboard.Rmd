@@ -1,0 +1,64 @@
+---
+title: "Ujian Nasional SMP Kota Bandung"
+author: "Muhammad Aswan Syahputra"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+    theme: flatly
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(ggthemr)
+ggthemr("flat", type = "outer")
+```
+
+```{r global, include=FALSE, message=FALSE, warning=FALSE}
+load("../data/un_smp_kecamatan.rda")
+source("../R/grafik_un_smp.R")
+```
+
+Column 1 {.sidebar}
+--------------------
+
+### Pengaturan
+
+```{r}
+selectInput(
+  inputId = "matpel", 
+  label = "Mata Pelajaran",
+  choices = c("Matematika", "IPA", "Bahasa Indonesia", "Bahasa Inggris")
+)
+
+selectInput(
+  inputId = "tahun_awal", 
+  label = "Tahun Awal", 
+  choices = c(2015, 2016)
+)
+
+selectInput(
+  inputId = "tahun_akhir", 
+  label = "Tahun Akhir", 
+  choices = c(2016, 2017)
+)
+```
+
+Column 2 {data-width=700}
+--------------------
+
+### 
+
+```{r}
+renderPlot({
+  grafik_un_smp(
+      .data = un_smp_kecamatan, 
+      matpel = input$matpel, 
+      tahun_awal = input$tahun_awal, 
+      tahun_akhir = input$tahun_akhir, 
+      judul = paste("Perubahan Rerata Nilai Ujian", input$matpel), 
+      subjudul = paste("Nilai Ujian Nasional Tingkat SMP Kota Bandung", input$tahun_awal, "-", input$tahun_akhir))
+})
+
+```
