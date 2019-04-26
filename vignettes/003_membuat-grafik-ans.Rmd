@@ -56,6 +56,8 @@ gdp_id <-
 glimpse(gdp_id)
 ```
 
+## Scatterplot
+
 Selanjutnya kita akan membuat grafik untuk mengetahui pertumbuhan GDP per tahun.
 
 Sebuah grafik yang dibuat menggunakan paket ggplot2 terdiri atas *layers* dari elemen-elemen grafik tersebut.
@@ -144,6 +146,8 @@ gdp_id %>%
   ggplot(aes(x = year, y = population, fill = province)) +
   geom_area(position = "fill")
 ```
+
+## Bar Graph
 
 Di bagian selanjutnya, kita akan mempelajari kondisi jalan di Provinsi Jawa Barat pada tahun 2000. Untuk melakukannya, pertama-tama kita harus mempersiapakan data yang didapat dari dataset indodapoer untuk kota/kabupaten di Jawa Barat.
 
@@ -309,5 +313,37 @@ Sekarang, cobalah untuk mengganti variabel yang ditampilkan menjadi variabel `sa
 ggplot(household_geo, aes(fill = safe_sanitation)) +
   geom_sf() +
   scale_fill_viridis()
+```
+
+## Lain-lain
+
+### Correlation Matrix
+```{r}
+library(corrplot)
+gdp_id %>% 
+  select(population:other_service) %>% cor(use = "pairwise.complete.obs") %>% 
+  corrplot()
+```
+
+### Waffle plot
+
+```{r}
+library(waffle)
+savings <- c(
+  `Mortgage\n($84,911)` = 84911, `Auto and\ntuition loans\n($14,414)` = 14414,
+  `Home equity loans\n($10,062)` = 10062, `Credit Cards\n($8,565)` = 8565
+)
+waffle(
+  savings / 392, rows = 7, size = 0.5, legend_pos = "bottom",
+  colors = c("#c7d4b6", "#a3aabd", "#a0d0de", "#97b5cf")
+)
+```
+
+### Heat Map
+```{r}
+airquality %>% 
+  ggplot(aes(x = Day, y = Month, fill = Temp)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "red")
 ```
 
