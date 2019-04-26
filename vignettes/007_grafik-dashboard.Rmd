@@ -1,5 +1,5 @@
 ---
-title: "Ujian Nasional SMP Kota Bandung"
+title: "Dasbor Ujian Nasional SMP"
 author: "Muhammad Aswan Syahputra"
 output: 
   flexdashboard::flex_dashboard:
@@ -35,13 +35,21 @@ selectInput(
 selectInput(
   inputId = "tahun_awal", 
   label = "Tahun Awal", 
-  choices = c(2015, 2016)
+  choices = c(2015, 2016),
+  selected = 2015
 )
 
 selectInput(
   inputId = "tahun_akhir", 
   label = "Tahun Akhir", 
-  choices = c(2016, 2017)
+  choices = c(2016, 2017),
+  selected = 2017
+)
+
+textAreaInput(
+  inputId = "judul",
+  label = "Judul Grafik",
+  value = "Perubahan Rerata Nilai Ujian Nasional"
 )
 ```
 
@@ -57,8 +65,7 @@ renderPlot({
       matpel = input$matpel, 
       tahun_awal = input$tahun_awal, 
       tahun_akhir = input$tahun_akhir, 
-      judul = paste("Perubahan Rerata Nilai Ujian", input$matpel), 
-      subjudul = paste("Nilai Ujian Nasional Tingkat SMP Kota Bandung", input$tahun_awal, "-", input$tahun_akhir))
+      judul = input$judul)
 })
 
 ```
