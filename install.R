@@ -4,7 +4,7 @@ if (!require("pacman")) {
 
 # For packages from CRAN --------------------------------------------------
 
-pacman::p_load(char = c("tidyverse", "sf", "viridis", "corrplot", "waffle", "gghighlight", "visdat", "skimr", "plotly", "shiny", "flexdashboard", "scales", "htmlwidgets", "magick", "grid"))
+pacman::p_load(char = c("tidyverse", "sf", "viridis", "corrplot", "waffle", "gghighlight", "visdat", "skimr", "gganimate", "gifski", "plotly", "shiny", "flexdashboard", "scales", "htmlwidgets", "magick", "grid"))
 
 # For packages from GitHub ------------------------------------------------
 
