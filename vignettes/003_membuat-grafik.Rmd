@@ -67,7 +67,7 @@ ggplot(gdp_id)
 Data yang digunakan untuk membuat grafik adalah elemen pertama. Selanjutnya, kita perlu mendefinisikan dimensi mana dari data yang ingin digambarkan dalam grafik. Pendefinisian ini dilakukan dalam komponen *aesthetic mapping* (`aes()`). Kita ingin menginvestigasi pertumbuhan GDP total dari tahun ke tahun. Untuk itu, kita mendefinisikan `year` di sumbu x dan `total_gdp_including_oil_and_gas` di sumbu y. Ubahlah "___" di bawah dengan ekspresi yang sesuai.
 
 ```{r}
-ggplot(gdp_id, aes(x = year, y = total_gdp_including_oil_and_gas))
+ggplot(gdp_id, aes(x = ___, y = ___))
 ```
 
 Pendefinisian sumbu x dan y telah menghasilkan layer baru dalam grafik. Namun, kita masih perlu mendefinisikan bentuk dari grafik tersebut melalui komponen *geometric object* (`geom_*()`) sebelum grafik tersebut dapat dibaca. Pertama-tama, kita membuat *scatter plot* di atas *layers* yang telah dibuat sebelumnya.
@@ -82,7 +82,7 @@ Selain cara penulisan di atas, kita juga dapat membuat grafik yang sama  dengan 
 ```{r}
 gdp_id %>% 
   ggplot(aes(x = year, y = total_gdp_including_oil_and_gas)) +
-  geom_point()
+  ___
 ```
 
 Penulisan fungsi `ggplot()` di dalam *pipe* bermanfaat ketika kita perlu melakukan pemrosesan awal dari data sebelum dibuatkan grafiknya. Dalam contoh berikut kita hanya ingin menginvestigasi provinsi-provinsi di Pulau Jawa saja sehingga kita menggunakan fungsi `filter()`. Cobalah membuat *scatter plot* untuk melihat hubungan antara `trade_hotel_and_restaurant` pada sumbu x dengan `manufacturing` pada sumbu y. Tambahkan *aesthetic* berupa warna untuk membedakan provinsi-provinsi yang ada.
@@ -90,7 +90,7 @@ Penulisan fungsi `ggplot()` di dalam *pipe* bermanfaat ketika kita perlu melakuk
 ```{r}
 gdp_id %>% 
   filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>% # ekstrak provinsi di Pulau Jawa
-  ggplot(aes(x = trade_hotel_and_restaurant, y = manufacturing, colour = province)) +
+  ggplot(aes(___, ___, colour = ___)) +
   geom_point(alpha = 0.5) +
   scale_size_area()
 ```
@@ -100,7 +100,7 @@ Selanjutnya, kita akan mencoba menambahkan *aesthetic* keempat yaitu variasi uku
 ```{r}
 gdp_id %>% 
   filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>% # ekstrak provinsi di Pulau Jawa
-  ggplot(aes(x = trade_hotel_and_restaurant, y = manufacturing, colour = province, size = population)) +
+  ggplot(aes(x = trade_hotel_and_restaurant, y = manufacturing, colour = province, size = ___)) +
   geom_point(alpha = 0.5)
 ```
 
@@ -112,7 +112,7 @@ Selanjutnya, kita akan mencoba bentuk grafik selanjutnya yaitu grafik garis atau
 gdp_id %>% 
   filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>%
   ggplot(aes(x = year, y = total_gdp_including_oil_and_gas, colour = province)) +
-  geom_line()
+  ___
 ```
 
 Kita juga dapat mengkombinasikan grafik garis dengan titik.
@@ -121,8 +121,8 @@ Kita juga dapat mengkombinasikan grafik garis dengan titik.
 gdp_id %>% 
   filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>%
   ggplot(aes(x = year, y = total_gdp_including_oil_and_gas, colour = province)) +
-  geom_line() +
-  geom_point()
+  geom____() +
+  geom____()
 ```
 
 ## Area graph
@@ -132,7 +132,7 @@ Jika *line graph* dapat menunjukkan evolusi suatu variabel dari daerah-daerah te
 ```{r}
 gdp_id %>% 
   filter(str_detect(province, "Kalimantan")) %>% 
-  ggplot(aes(x = year, y = population, fill = province)) +
+  ggplot(aes(x = year, y = ___, fill = province)) +
   geom_area()
 ```
 
@@ -142,7 +142,7 @@ Jika kita lebih tertarik terhadap kontribusi relatif dibandingkan dengan nilai a
 gdp_id %>% 
   filter(str_detect(province, "Kalimantan")) %>% 
   ggplot(aes(x = year, y = population, fill = province)) +
-  geom_area(position = "fill")
+  geom_area(___)
 ```
 
 Di bagian selanjutnya, kita akan mempelajari kondisi jalan di Provinsi Jawa Barat pada tahun 2000. Untuk melakukannya, pertama-tama kita harus mempersiapakan data yang didapat dari dataset indodapoer untuk kota/kabupaten di Jawa Barat.
@@ -174,29 +174,29 @@ Kita ingin melihat kota/kabupaten mana saja yang memiliki jalan dengan kondisi b
 ```{r}
 jabar_road %>% 
   filter(condition == "Good") %>% 
-  ggplot(aes(x = district, y = road_length)) +
-  geom_col()
+  ggplot(aes(x = district, y = ___)) +
+  ___
 ```
 
 Kita juga dapat membuat *bar plot* untuk keempat kondisi jalan di tiap kota/kabupaten dengan membuat *grouped bar plot* dan membedakan warna kolom-kolomnya. Untuk menghasilkan *grouped bar plot*, kita menggunakan argumen `position = "dodge"` pada fungsi `geom_col()`. Gunakan variabel `condition` untuk argumen `fill`.
 
 ```{r}
-ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
-  geom_col(position = "dodge")
+ggplot(jabar_road, aes(x = district, y = road_length, fill = ___)) +
+  geom_col(position = ___)
 ```
 
 Kita juga dapat membuat *stacked bar plot* untuk memberikan perhatian pada nilai total panjang jalan keempat kondisi. Kita cukup menghapus argumen `position = dodge` untuk melakukannya.
 
 ```{r}
 ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
-  geom_col()
+  ___
 ```
 
 Jika kita lebih tertarik pada kontribusi relatif dari masing-masing kondisi jalan, kita dapat menormalisasi nilai dengan total panjang jalan di tiap kota/kabupaten menggunakan argumen `position = fill`.
 
 ```{r}
 ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
-  geom_col(position = "fill")
+  ___
 ```
 
 Kita juga dapat mengganti label untuk sumbu y sehingga menampilkan persentase. Untuk itu, kita menambahkan fungsi dan argumen `scale_y_continuous(labels = scales::percent)`.
@@ -204,7 +204,7 @@ Kita juga dapat mengganti label untuk sumbu y sehingga menampilkan persentase. U
 ```{r}
 ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
   geom_col(position = "fill") +
-  scale_y_continuous(labels = scales::percent)
+  ___
 ```
 
 Selanjutnya kita kembali pada data GDP. Kali ini kita ingin melihat GDP tertinggi di masing-masing provinsi beserta tahun ketika GDP tertinggi di provinsi tersebut terjadi.
@@ -226,7 +226,7 @@ Untuk menyajikan data yang telah kita ekstraksi, kita menggunakan grafik *lollip
 
 ```{r}
 highest_gdp %>% 
-  ggplot(aes(x = gdp, y = province, colour = year)) +
+  ggplot(aes(x = ___, y = province, colour = year)) +
   geom_segment(aes(yend = province), xend = 0, colour = "grey50") +
   geom_point(size = 3)
   geom_label(aes(label = year), size = 2, hjust = -0.2)
@@ -236,7 +236,7 @@ Agar terlihat lebih rapi dan lebih mudah dipahami, kita dapat mengurutkan nilai 
 
 ```{r}
 highest_gdp %>% 
-  ggplot(aes(x = gdp, y = fct_reorder(province, gdp), colour = year)) +
+  ggplot(aes(x = gdp, y = ___(province, gdp), colour = year)) +
   geom_segment(aes(yend = province), xend = 0, colour = "grey50") +
   geom_point(size = 3)
   geom_label(aes(label = year), size = 2, hjust = -0.2)
@@ -247,7 +247,7 @@ highest_gdp %>%
 Selanjutnya kita akan bermain dengan peta menggunakan data geografis. Kita menggunakan data dengan format GeoJSON yaitu states_provinces.json yang berada di direktori data-raw. Untuk membukanya, kita memerlukan paket sf.
 
 ```{r}
-library(sf)
+library(___)
 geo_id <- st_read("../data-raw/states_provinces.json", stringsAsFactors = FALSE)
 geo_id
 ```
@@ -255,7 +255,7 @@ geo_id
 Pertama-tama kita dapat memvisualisasikan peta dari wilayah-wilayah yang terdapat dalam data `geo_id` dengan menggunakan fungsi `geom_sf()`.
 
 ```{r}
-ggplot(geo_id) +
+ggplot(___) +
   geom_sf()
 ```
 
@@ -289,7 +289,7 @@ household_geo
 Setelah memiliki data `household_geo` yang menyimpan informasi geografis dan *household access*, kita dapat memvisualisasikannya dalam bentuk peta. Kita akan mencoba membuat peta tematik (*choropleth*) dari variabel `electricity_total`.
 
 ```{r}
-ggplot(household_geo, aes(fill = electricity_total)) +
+ggplot(___, aes(fill = electricity_total)) +
   geom_sf()
 ```
 
@@ -300,14 +300,14 @@ library(viridis)
 
 ggplot(household_geo, aes(fill = electricity_total)) +
   geom_sf() +
-  scale_fill_viridis()
+  ___
 ```
 
 Sekarang, cobalah untuk mengganti variabel yang ditampilkan menjadi variabel `safe_sanitation`.
 
 ```{r}
-ggplot(household_geo, aes(fill = safe_sanitation)) +
-  geom_sf() +
+ggplot(___, aes(fill = ___)) +
+  ___ +
   scale_fill_viridis()
 ```
 
