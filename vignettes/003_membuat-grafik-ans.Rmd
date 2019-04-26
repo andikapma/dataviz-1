@@ -1,0 +1,258 @@
+---
+title: "Membuat Grafik"
+author: "Muhammad Aswan Syahputra"
+output: 
+  github_document:
+    fig_height: 6
+    fig_width: 9
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", message = FALSE, warning = FALSE)
+```
+
+Paket ggplot2 adalah implementasi dari konsep *Grammar of graphic* untuk bahasa pemrograman R. Anda dapat membaca artikel mengenai konsep implementasi ggplot2 tersebut melalui pranala [ini](http://vita.had.co.nz/papers/layered-grammar.pdf). Dengan memahami konsep dari *grammar of graphic*, Anda dapat membuat berbagai jenis plot dengan ringkas dan mudah. Mari kita perhatikan kembali struktur umum penulisan kode R untuk membuat grafik menggunakan paket ggplot2:
+
+```
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))  
+```
+
+Anda dapat menarik kesimpulan berdasarkan struktur penulisan kode R di atas bahwa setidaknya terdapat tiga komponen utama untuk membuat grafik, yaitu:
+
+* *Data*
+* *Aesthetic mapping*
+* *Geometric object*
+
+Sekarang Anda dipersilakan untuk mengaktifkan paket tidyverse untuk mengimpor, mengolah, dan visualisasi data dengan cara mengisi bagian ___ dengan jawaban yang tepat! (Catatan: paket tidyverse berfungsi untuk mengaktifkan paket readr, tibble, tidyr, dplyr, ggplot2, dan purrr)
+
+```{r load-package}
+library(tidyverse)
+```
+
+Dalam contoh ini Anda akan menggunakan data *Indonesia Database for Policy and Economic Research* dari [The World Bank](https://datacatalog.worldbank.org/dataset/indonesia-database-policy-and-economic-research). Data tersebut tersedia dalam berkas indodapoer.csv di dalam direktori data-raw. 
+
+```{r load-data}
+indodapoer <- read_csv("../data-raw/indodapoer.csv")
+dim(indodapoer)
+colnames(indodapoer)
+```
+
+Dataset indodapoer tersebut memiliki sangat banyak informasi seperti terlihat setelah Anda menjalankan fungsi `dim()` dan `colnames()` di atas. Kita akan berfokus pada informasi mengenai *Gross Domestic Product* (GDP) per provinsi dan mengekstraknya menjadi dataset baru dengan nama `gdp_id` dengan menggunakan baris kode pada *chunk* berikut:
+
+```{r create-gdp_id}
+gdp_id <- 
+  indodapoer %>% 
+  filter(str_detect(province_or_district, "Prop")) %>% 
+  select(province = province_or_district, 
+         year, 
+         population = total_population_in_number_of_people,
+         matches("gdp_on.*constant"),
+         matches("total_gdp.*constant")) %>% 
+  rename_all(~str_remove_all(., "(?:gdp_on_|_sector_in_idr_million_constant_price|_in_idr_million_constant_price)")) %>% 
+  mutate(province = str_remove(province, ", Prop."))
+glimpse(gdp_id)
+```
+
+Selanjutnya kita akan membuat grafik untuk mengetahui pertumbuhan GDP per tahun.
+
+Sebuah grafik yang dibuat menggunakan paket ggplot2 terdiri atas *layers* dari elemen-elemen grafik tersebut.
+```{r}
+ggplot(gdp_id)
+```
+
+Data yang digunakan untuk membuat grafik adalah elemen pertama. Selanjutnya, kita perlu mendefinisikan dimensi mana dari data yang ingin digambarkan dalam grafik. Pendefinisian ini dilakukan dalam komponen *aesthetic mapping* (`aes()`). Kita ingin menginvestigasi pertumbuhan GDP total dari tahun ke tahun. Untuk itu, kita mendefinisikan `year` di sumbu x dan `total_gdp_including_oil_and_gas` di sumbu y.
+```{r}
+ggplot(gdp_id, aes(x = year, y = total_gdp_including_oil_and_gas))
+```
+Pendefinisian sumbu x dan y telah menghasilkan layer baru dalam grafik. Namun, kita masih perlu mendefinisikan bentuk dari grafik tersebut melalui komponen *geometric object* (`geom_*()`) sebelum grafik tersebut dapat dibaca. Pertama-tama, cobalah membuat *scatter plot* di atas *layers* yang sudah dibuat sebelumnya.
+```{r}
+ggplot(gdp_id, aes(x = year, y = total_gdp_including_oil_and_gas)) +
+  geom_point()
+```
+Selain cara penulisan di atas, kita juga dapat membuat grafik menggunakan fungsi `ggplot()` di dalam sebuah *pipe* (`%>%`).
+```{r}
+gdp_id %>% 
+  ggplot(aes(x = year, y = total_gdp_including_oil_and_gas)) +
+  geom_point()
+```
+
+Penulisan fungsi `ggplot()` di dalam *pipe* bermanfaat ketika kita perlu melakukan pemrosesan awal dari data sebelum dibuatkan grafiknya. Dalam contoh berikut kita hanya ingin menginvestigasi provinsi-provinsi di Pulau Jawa saja sehingga kita menggunakan fungsi `filter()`. Cobalah membuat *scatter plot* untuk melihat hubungan antara `trade_hotel_and_restaurant` dengan `manufacturing`. Tambahkan *aesthetic* berupa warna untuk membedakan provinsi-provinsi yang ada.
+```{r}
+gdp_id %>% 
+  filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>% # ekstrak provinsi di Pulau Jawa
+  ggplot(aes(x = trade_hotel_and_restaurant, y = manufacturing, colour = province)) +
+  geom_point(alpha = 0.5) +
+  scale_size_area()
+```
+Selanjutnya, kita akan mencoba menambahkan *aesthetic* keempat yaitu variasi ukuran titik/lingkaran berdasarkan populasi.
+```{r}
+gdp_id %>% 
+  filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>% # ekstrak provinsi di Pulau Jawa
+  ggplot(aes(x = trade_hotel_and_restaurant, y = manufacturing, colour = province, size = population)) +
+  geom_point(alpha = 0.5)
+```
+
+## Line Graph
+
+Kita akan mencoba bentuk grafik selanjutnya yaitu grafik garis atau *line graph*. 
+```{r}
+gdp_id %>% 
+  filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>%
+  ggplot(aes(x = year, y = total_gdp_including_oil_and_gas, colour = province)) +
+  geom_line()
+```
+
+Kita juga dapat mengkombinasikan grafik garis dengan titik.
+```{r}
+gdp_id %>% 
+  filter(province %in% c("Banten", "DKI Jakarta", "Jawa Barat", "Jawa Tengah", "Di Yogyakarta", "Jawa Timur")) %>%
+  ggplot(aes(x = year, y = total_gdp_including_oil_and_gas, colour = province)) +
+  geom_line() +
+  geom_point()
+```
+
+
+## Area graph
+
+Jika *line graph* dapat menunjukkan evolusi suatu variabel dari daerah-daerah tertentu terhadap waktu, *area graph* dapat digunakan jika kita juga tertarik melihat kontribusi daerah-daerah tersebut terhadap keseluruhan dalam evolusinya. Cobalah membuat *area graph* populasi terhadap waktu dari provinsi-provinsi yang ada di Kalimantan.
+```{r}
+gdp_id %>% 
+  filter(str_detect(province, "Kalimantan")) %>% 
+  ggplot(aes(x = year, y = population, fill = province)) +
+  geom_area()
+```
+
+Jika kita lebih tertarik terhadap kontribusi relatif dibandingkan dengan nilai absolut, kita dapat menambahkan argumen `position = "fill"` pada fungsi `geom_area()`. Ini akan menormalisasi nilai dari variabel terhadap jumlah keseluruhan sehingga totalnya sama dengan 1.
+```{r}
+gdp_id %>% 
+  filter(str_detect(province, "Kalimantan")) %>% 
+  ggplot(aes(x = year, y = population, fill = province)) +
+  geom_area(position = "fill")
+```
+
+
+
+```{r}
+jabar <- c("Bogor, Kab.", "Sukabumi, Kab.", "Cianjur, Kab.", "Bandung, Kab.", "Garut, Kab.", "Tasikmalaya, Kab.", "Ciamis, Kab.", "Kuningan, Kab.", "Cirebon, Kab.", "Majalengka, Kab.", "Sumedang, Kab.", "Indramayu, Kab.", "Subang, Kab.", "Purwakarta, Kab.", "Karawang, Kab.", "Bekasi, Kab.", "Bandung Barat, Kab.", "Pangandaran, Kab.", "Bogor, Kota", "Sukabumi, Kota", "Bandung, Kota", "Cirebon, Kota", "Bekasi, Kota", "Depok, Kota", "Cimahi, Kota", "Tasikmalaya, Kota", "Banjar, Kota")
+
+jabar_road <- 
+  indodapoer %>% 
+  filter(province_or_district %in% jabar, year == 2000) %>% 
+  select(district = province_or_district,
+         year,
+         ends_with("bina_marga_data")) %>% 
+  gather("condition", "road_length", length_of_district_road_bad_damage_in_km_bina_marga_data:length_of_district_road_light_damage_in_km_bina_marga_data) %>% 
+  mutate(
+    condition = recode(condition,
+                       length_of_district_road_bad_damage_in_km_bina_marga_data = "Bad damage",
+                       length_of_district_road_light_damage_in_km_bina_marga_data = "Light damage",
+                       length_of_district_road_fair_in_km_bina_marga_data = "Fair",
+                       length_of_district_road_good_in_km_bina_marga_data = "Good"),
+    condition = factor(condition, levels = c("Bad damage", "Light damage", "Fair", "Good"))
+  ) %>% 
+  drop_na(road_length)
+jabar_road
+```
+
+```{r}
+jabar_road %>% 
+  filter(condition == "Good") %>% 
+  ggplot(aes(x = district, y = road_length)) +
+  geom_col()
+```
+
+```{r}
+ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
+  geom_col(position = "dodge")
+```
+
+```{r}
+ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
+  geom_col()
+```
+
+```{r}
+ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
+  geom_col(position = "fill")
+```
+```{r}
+ggplot(jabar_road, aes(x = district, y = road_length, fill = condition)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent)
+```
+
+```{r}
+highest_gdp <-
+  gdp_id %>% 
+  select(province, year, total_gdp_including_oil_and_gas) %>%
+  group_by(province) %>% 
+  drop_na() %>% 
+  summarise(
+    gdp = max(total_gdp_including_oil_and_gas, na.rm = TRUE),
+    year = as.character(year[[which.max(total_gdp_including_oil_and_gas)]])
+  )
+```
+```{r}
+highest_gdp %>% 
+  ggplot(aes(x = gdp, y = province, colour = year)) +
+  geom_segment(aes(yend = province), xend = 0, colour = "grey50") +
+  geom_point(size = 3)
+  geom_label(aes(label = year), size = 2, hjust = -0.2)
+```
+
+```{r}
+highest_gdp %>% 
+  ggplot(aes(x = gdp, y = fct_reorder(province, gdp), colour = year)) +
+  geom_segment(aes(yend = province), xend = 0, colour = "grey50") +
+  geom_point(size = 3)
+  geom_label(aes(label = year), size = 2, hjust = -0.2)
+```
+
+
+## Choropleth
+```{r}
+household_access <-
+  indodapoer %>%
+    filter(str_detect(province_or_district, "Prop")) %>% 
+  select(province = province_or_district,
+         year,
+         starts_with("household_access")) %>%
+  rename_all(~str_remove_all(., "(?:household_access_to_|household_access_to_total_|_in_percent_of_total_household)")) %>%
+  mutate(province = str_remove(province, ", Prop.")) %>% 
+  na.omit() %>%
+  arrange(year)
+glimpse(household_access)
+```
+
+```{r}
+library(sf)
+library(viridis)
+geo_id <- st_read("../data-raw/states_provinces.json", stringsAsFactors = FALSE)
+household_geo <- full_join(
+  filter(household_access, year == 2011),
+  geo_id,
+  by = c("province" = "name")
+)
+```
+
+```{r}
+ggplot(household_geo, aes(fill = electricity_total)) +
+  geom_sf() +
+  scale_fill_viridis()
+```
+
+```{r}
+ggplot(household_geo, aes(fill = safe_water)) +
+  geom_sf() +
+  scale_fill_viridis()
+```
+
+```{r}
+ggplot(household_geo, aes(fill = safe_sanitation)) +
+  geom_sf() +
+  scale_fill_viridis()
+```
+
