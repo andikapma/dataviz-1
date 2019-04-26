@@ -3,3 +3,9 @@
 .RData
 .Ruserdata
 dataviz.Rproj
+vignettes/001_pendahuluan-ans.Rmd
+vignettes/002_eksplor-transform-ans.Rmd
+vignettes/003_membuat-grafik-ans.Rmd
+vignettes/004_kostumisasi-ans.Rmd
+vignettes/005_animasi-grafik-ans.Rmd
+vignettes/006_grafik-interaktif-ans.Rmd
