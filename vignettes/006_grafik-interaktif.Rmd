@@ -16,14 +16,14 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center", message = FALSE, warnin
 Selain membuat grafik statis dan animasi dari grafik statis, Anda juga dapat membuat grafik interaktif dengan mudah menggunakan bantuan dari paket plotly. Aktifkanlah paket plotly beserta paket tidyverse dengan cara mengisi bagian ___ dengan jawaban yang tepat!
 
 ```{r load-package}
-library(tidyverse)
-library(plotly)
+___
+___
 ```
 
 Sekarang kita Akan melakukan eksperimen dengan menggunakan dataset airquality yang disediakan oleh R. Anda dapat mempelajari informasi dataset ini dengan cara menjalankan `?airquality`. Tulis dan jalankanlah baris kode R untuk mengetahui struktur dataset airquality tersebut!
 
 ```{r explore-airquality}
-glimpse(airquality)
+___
 ```
 
 Jika diperhatikan, penulisan data bulan pada dataset airquality masih menggunakan angka. Dalam *chunk* berikut kita akan mengubah penulisan tersebut menggunakan singkatan nama bulan dan menyimpan hasil perubahan dataset tersebut ke dalam obyek R dengan nama aq. R telah menyediakan vektor yang berisi nama-nama bulan, baik tanpa disingkat dan disingkat, sehingga dapat mudah kita gunakan. Anda dapat mencobanya dengan menjalankan `month.name` dan `month.abb` pada konsol RStudio!
@@ -44,15 +44,15 @@ Sekarang buatlah *scatterplot* dengan nama plot_aq berdasarkan kriteria berikut:
 
 ```{r plot-aq}
 plot_aq <- 
-  ggplot(aq, aes(x = Solar.R, y = Temp, col = Month)) +
-  geom_point()
+  ggplot(aq, aes(x = ___, y = ___, col = ___)) +
+  ___
 plot_aq
 ```
 
 Anda telah membuat *scatterplot* statis dengan nama plot_aq. Sekarang kita akan menggunakan fungsi `ggplotly()` dari paket plotly untuk mengubah grafik statis tersebut menjadi grafik interaktif. Isilah bagian ___ dengan nama *scatterplot* yang telah Anda buat!
 
 ```{r iplot-aq}
-iplot_aq <- ggplotly(plot_aq)
+iplot_aq <- ggplotly(___)
 iplot_aq
 ```
 
